@@ -13,3 +13,6 @@ app.use("/css",express.static(__dirname+"/node_modules/bootstrap/dist/css"))
 app.get("/",(req,res)=>{
     res.sendFile(__dirname+"/home.html")
 })
+app.get("/registro",(req,res)=>{
+    res.sendFile(__dirname+"/registro.html")
+})
