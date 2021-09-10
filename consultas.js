@@ -1,13 +1,20 @@
-const {Pool}=require('pg')
-const pool=new Pool({
-    user:'postgres',
-    password:'1234',
-    host:'localhost',
-    port:5432,
-    database:'ahorro'
+const {
+    Pool
+} = require('pg')
+const pool = new Pool({
+    user: 'postgres',
+    password: '1234',
+    host: 'localhost',
+    port: 5432,
+    database: 'ahorro'
 })
 
+async function insertarUsuario(email, password, nombre, apellido) {
+    const result = await pool.query(`INSERT INTO usuario(email,password, nombre,apellido) values('${email}','${password}','${nombre}','${apellido}') RETURNING *;`)
+    return result.rows[0]
+}
 
 
-
-module.exports={}
+module.exports = {
+    insertarUsuario
+}
