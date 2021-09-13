@@ -10,11 +10,16 @@ const pool = new Pool({
 })
 
 async function insertarUsuario(email, password, nombre, apellido) {
-    const result = await pool.query(`INSERT INTO usuario(email,password, nombre,apellido) values('${email}','${password}','${nombre}','${apellido}') RETURNING *;`)
+    const result = await pool.query(`INSERT INTO usuario(email,password, nombre,apellido) VALUES('${email}','${password}','${nombre}','${apellido}') RETURNING *;`)
+    return result.rows[0]
+}
+async function buscarUsuario(email,password){
+
+    const result= await pool.query(`SELECT * FROM usuario where email='${email}' AND password='${password}' `)
     return result.rows[0]
 }
 
 
 module.exports = {
-    insertarUsuario
+    insertarUsuario,buscarUsuario
 }
