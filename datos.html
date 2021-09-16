@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
     <link rel="stylesheet" href="/css/estilo.css">
     <title>Datos bancarios</title>
@@ -45,9 +46,31 @@
                 <input class="form-control w-50 m-auto" name="tipo" id="tipo" type="number" />
               </div>
             </div>
-            <button class="btn btn-success " id="verificacion">Ingresar</button>
+            <button class="btn btn-success" id="verificacion">Ingresar</button>
             <p>¿Aún no tienes cuenta? <a href="/registro">Regístrate</a></p>
           </form>
+
+    </section>
+    <section id="transacciones" class="container-fluid">
+      <div class="py-4">
+        <h2>Lista de transacciones</h2>
+    
+        <hr />
+    
+        <table class="table table-dark">
+          <thead>
+            <tr>
+              <th scope="col">#</th>              
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Monto</th>
+              <th scope="col">Tipo de transaccion</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoTabla">
+    
+          </tbody>
+        </table>
 
     </section>
 </body>
