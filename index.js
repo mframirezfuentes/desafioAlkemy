@@ -3,7 +3,8 @@ const app = express()
 const bodyParser = require('body-parser')
 const {
     insertarUsuario,
-    buscarUsuario
+    buscarUsuario,
+    ingresoOperacion
 } = require('./consultas')
 const jwt = require('jsonwebtoken')
 const secretKey = "Silencio"
@@ -46,22 +47,22 @@ app.post("/login", async (req, res) => {
     }
 
 })
-app.post("/autenticar",async(req,res)=>{
+app.post("/autenticar", async (req, res) => {
     const {
         email,
         password
     } = req.body
     const user = await buscarUsuario(email, password)
     if (user.email) {
-      
-            const token = jwt.sign({
-                    exp: Math.floor(Date.now() / 1000) + 180,
-                    data: user
-                },
-                secretKey
-            );
-            res.send(token)
-       
+
+        const token = jwt.sign({
+                exp: Math.floor(Date.now() / 1000) + 180,
+                data: user
+            },
+            secretKey
+        );
+        res.send(token)
+
     } else {
         res.status(404).send({
             error: "Este usuario no esta registrado en la base de datos",
@@ -77,16 +78,24 @@ app.get("/datos", (req, res) => {
         const {
             data
         } = decode
-        const {id,mail,nombre}=data
-        err? 
-        res.status(401).send(
-            res.send({
-                error:`401 No Autorizado`,
-                message: `Usted no esta autorizado para estar en esta página`,
-                token_error:err.message
+        const {
+            id,
+            mail,
+            nombre
+        } = data
+        err ?
+            res.status(401).send(
+                res.send({
+                    error: `401 No Autorizado`,
+                    message: `Usted no esta autorizado para estar en esta página`,
+                    token_error: err.message
+                })
+            ) :
+            res.sendFile(__dirname + `/datos.html`, {
+                id,
+                mail,
+                nombre
             })
-        ):
-        res.sendFile(__dirname+`/datos.html`,{id,mail,nombre})
     })
 })
 //ruta de registro de un usuario a la base de datos
@@ -110,8 +119,33 @@ app.post("/usuario", async (req, res) => {
     }
 
 })
+app.post("/transaccion", (req, res) => {
+                const {
+                    token
+                } = req.query
+                jwt.verify(token, secretKey, async (err, decode) => {
+                 
+                    const {
+                        mail,
+                        monto,
+                        tipo
+                    } = data
+                   
+                    try {
+                        const result = await ingresoOperacion(mail, monto, tipo)
+                        res.status(200).sendFile(__dirname + "/datos.html")
+                    } catch (error) {
+                        res.status(500).send({
+                            error: `Algo salio mal ... ${error}`,
+                            code: 500
+
+                        })
+                    }
+
+                })
+            })
 
 
-app.get("*",(req,res)=>{
-    res.send("Ruta invalida")
-})
+                app.get("*", (req, res) => {
+                    res.send("Ruta invalida")
+                })

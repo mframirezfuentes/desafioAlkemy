@@ -18,8 +18,15 @@ async function buscarUsuario(email,password){
     const result= await pool.query(`SELECT * FROM usuario where email='${email}' AND password='${password}' `)
     return result.rows[0]
 }
-
+async function ingresoOperacion(email,monto,tipo) {
+    const result= await pool.query(`INSERT INTO operacion(email,monto,fecha,tipo)values('${email}',${monto},CURRENT_TIMESTAMP,'${tipo}'') `)
+    
+}
+async function mostrarOperacion(email) {
+    const result= await pool.query(`SELECT * from operacion where email=`)
+    
+}
 
 module.exports = {
-    insertarUsuario,buscarUsuario
+    insertarUsuario,buscarUsuario,ingresoOperacion
 }
